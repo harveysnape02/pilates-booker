@@ -67,6 +67,7 @@ def book_pilates():
         print("Finalised add to basket...")
         try:
             print("Finalising booking...")
+            page.wait_for_timeout(defaultTimeout)
             #Final book now button
             page.get_by_role("button", name="Book now").click(timeout=defaultTimeout)
             #Confirm booking
