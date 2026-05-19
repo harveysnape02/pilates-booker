@@ -2,11 +2,16 @@ from playwright.sync_api import sync_playwright, expect
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from datetime import datetime, date, timedelta
 import re
+import zoneinfo
 import os
 
-#Setting variables for script
-today = date.today()
-targetDate = today + timedelta(days=7)
+# 1. Get the current time explicitly in the UK timezone
+uk_timezone = zoneinfo.ZoneInfo("Europe/London")
+now_in_uk = datetime.now(uk_timezone)
+# 2. Extract just the local calendar date
+today = now_in_uk.date()
+# 3. Calculate your target date (6 days from your true local day)
+targetDate = today + timedelta(days=6)
 defaultTimeout = 6000
 username = os.environ.get('MY_USERNAME')
 password = os.environ.get('MY_PASSWORD')
