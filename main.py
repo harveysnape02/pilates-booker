@@ -18,8 +18,8 @@ bookingLink = f"https://bookings.better.org.uk/location/better-gym-connswater/fi
 def book_pilates():
     with sync_playwright() as p:
         #Set up
-        browser = p.chromium.launch(channel="chrome", headless=True)
-        page = browser.new_page()
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(viewport={'width': 1280, 'height': 800})
         print(f"Attempting to open site {bookingLink}")
         page.goto(bookingLink, wait_until="networkidle")
         page.wait_for_timeout(defaultTimeout)

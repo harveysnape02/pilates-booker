@@ -43,7 +43,11 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # 3. Run your actual script
+      # 3. Install playwright browsers
+      - name: Install Playwright Browsers
+        run: playwright install chromium --with-deps
+
+      # 4. Run the Python script
       - name: Run Python Script
         env:
           MY_USERNAME: ${{ secrets.PILATES_USERNAME }}
