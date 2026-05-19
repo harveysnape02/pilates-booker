@@ -7,7 +7,7 @@ import os
 #Setting variables for script
 today = date.today()
 targetDate = today + timedelta(days=6)
-defaultTimeout = 6000
+defaultTimeout = 10000
 username = os.environ.get('MY_USERNAME')
 password = os.environ.get('MY_PASSWORD')
 bookingLink = f"https://bookings.better.org.uk/location/better-gym-connswater/fitness-classes1/{targetDate}/by-time"
