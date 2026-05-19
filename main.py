@@ -71,7 +71,7 @@ def book_pilates():
             page.get_by_role("button", name="Book now").click(timeout=defaultTimeout)
             #Confirm booking
             page.get_by_label(re.compile("Pay now")).click(timeout=defaultTimeout)
-            print(f"Pilates booked for {today}!!!!")
+            print(f"Pilates booked for {targetDate}!!!!")
         except PlaywrightTimeoutError:
             print("Error finalising booking...")
             browser.close()
