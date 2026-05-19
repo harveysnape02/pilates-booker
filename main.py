@@ -56,7 +56,7 @@ def book_pilates():
             page.get_by_label(re.compile("Remove from cart")).click(timeout=defaultTimeout)
             success_message = page.get_by_text("Successfully removed item from the basket.")
             success_message.wait_for(state="visible")
-            print("Cart cleared")
+            print("Cart succesfully cleared")
         except:
             print("Cart already empty")
             
