@@ -7,7 +7,7 @@ import os
 #Setting variables for script
 today = date.today()
 targetDate = today + timedelta(days=6)
-defaultTimeout = 10000
+defaultTimeout = 6000
 username = os.environ.get('MY_USERNAME')
 password = os.environ.get('MY_PASSWORD')
 bookingLink = f"https://bookings.better.org.uk/location/better-gym-connswater/fitness-classes1/{targetDate}/by-time"
@@ -19,7 +19,7 @@ def book_pilates():
         page = browser.new_page()
         print(f"Attempting to open site {bookingLink}")
         page.goto(bookingLink, wait_until="networkidle")
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(defaultTimeout)
         current_url = page.url
         
         #Checks to see if classes have been released yet
