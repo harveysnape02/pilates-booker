@@ -71,7 +71,8 @@ def book_pilates():
         try:
             print("Finalising booking...")
             page.get_by_role("button", name="Pay now").click(timeout=defaultTimeout)
-            page.wait_for_load_state("networkidle")
+            print("Waiting for booking confirmation URL...")
+            page.wait_for_url("**/booking-confirmed/**", timeout=15000)
             print(f"Pilates booked for {targetDate}!!!!")
         except PlaywrightTimeoutError:
             print("Error finalising booking...")
