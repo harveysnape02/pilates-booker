@@ -6,7 +6,7 @@ import os
 
 #Setting variables for script
 today = date.today()
-targetDate = today + timedelta(days=6)
+targetDate = today + timedelta(days=7)
 defaultTimeout = 6000
 username = os.environ.get('MY_USERNAME')
 password = os.environ.get('MY_PASSWORD')
