@@ -10,6 +10,9 @@ targetDate = today + timedelta(days=3)
 defaultTimeout = 6000
 username = os.environ.get('MY_USERNAME')
 password = os.environ.get('MY_PASSWORD')
+if not username or not password:
+    print("Error: Missing username or password environment variables.")
+    exit(1)
 bookingLink = f"https://bookings.better.org.uk/location/better-gym-connswater/fitness-classes1/{targetDate}/by-time"
 
 def book_pilates():
