@@ -63,7 +63,7 @@ def book_pilates():
             page.get_by_label(re.compile("Pilates")).click(timeout=defaultTimeout)
             print("Pilates class selected")
         except PlaywrightTimeoutError:
-            print("Error occurred while navigating to Pilates class.\n Day is either not available for selection yet or pilates is not available on date selected {targetDate}.")
+            print(f"Error occurred while navigating to Pilates class.\n{targetDate} is either not available for selection yet or pilates is not available on {targetDate}..")
             browser.close()
             return
         
