@@ -56,20 +56,28 @@ def book_pilates():
         except:
             print("Cart already empty")
             
-        #Main booking process
-        page.get_by_test_id(f"date-{targetDate}").click(timeout=defaultTimeout)
-        page.get_by_label(re.compile("Pilates")).click(timeout=defaultTimeout)
-        print("Adding to basket...")
-        page.get_by_role("button", name="Book now").click(timeout=defaultTimeout)
-        print("Finalised add to basket...")
+        #Navigating to Pilates class
         try:
-            print("Finalising booking...")
+            print("Navigating to Pilates class...")
+            page.get_by_test_id(f"date-{targetDate}").click(timeout=defaultTimeout)
+            page.get_by_label(re.compile("Pilates")).click(timeout=defaultTimeout)
+            print("Pilates class selected")
+        except PlaywrightTimeoutError:
+            print("Error occurred while navigating to Pilates class.\n Day is either not available for selection yet or pilates is not available on date selected {targetDate}.")
+            browser.close()
+            return
+        
+        #Main booking process
+        try:
+            print("Adding to basket...")
+            page.get_by_role("button", name="Book now").click(timeout=defaultTimeout)
+            print("Confirming booking...")
             page.get_by_role("button", name="Pay now").click(timeout=defaultTimeout)
             print("Waiting for booking confirmation URL...")
             page.wait_for_url("**/booking-confirmed/**", timeout=15000)
             print(f"Pilates booked for {targetDate}!!!!")
         except PlaywrightTimeoutError:
-            print("Error finalising booking...")
+            print("Error booking the pilates class.")
             browser.close()
             return
         browser.close()
