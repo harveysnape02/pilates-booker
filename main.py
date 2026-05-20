@@ -10,15 +10,15 @@ uk_timezone = zoneinfo.ZoneInfo("Europe/London")
 now_in_uk = datetime.now(uk_timezone)
 # 2. Extract just the local calendar date
 today = now_in_uk.date()
-# 3. Calculate your target date (6 days from your true local day)
-targetDate = today + timedelta(days=6)
+# 3. Calculate your target date (7 days from your true local day)
+targetDate = today + timedelta(days=7)
 defaultTimeout = 6000
 username = os.environ.get('MY_USERNAME')
 password = os.environ.get('MY_PASSWORD')
 if not username or not password:
     print("Error: Missing username or password environment variables.")
     exit(1)
-bookingLink = f"https://bookings.better.org.uk/location/better-gym-connswater/fitness-classes1/{targetDate}/by-time"
+bookingLink = f"https://bookings.better.org.uk/location/better-gym-connswater/fitness-classes1/{today}/by-time"
 
 def book_pilates():
     with sync_playwright() as p:
@@ -27,17 +27,6 @@ def book_pilates():
         page = browser.new_page(viewport={'width': 1280, 'height': 800})
         print(f"Attempting to open site {bookingLink}")
         page.goto(bookingLink, wait_until="networkidle")
-        page.wait_for_timeout(defaultTimeout)
-        current_url = page.url
-        
-        #Checks to see if classes have been released yet
-        if str(bookingLink) not in current_url:
-            print(f"Redirected, darn. We landed on: {current_url}")
-            print(f"Classes for {targetDate} have not been released yet.")
-            browser.close()
-            return
-        print(f"Succefully opened booking site for classes on {targetDate}")
-        
         #Cookie block
         print("Checking for cookies pop-up")
         try:
@@ -57,7 +46,6 @@ def book_pilates():
             print("Issue entering log in details")
             browser.close()
             return
-            
         #Clearing Cart
         try:
             print("Checking if Cart is empty")
@@ -69,6 +57,7 @@ def book_pilates():
             print("Cart already empty")
             
         #Main booking process
+        page.get_by_test_id(f"date-{targetDate}").click(timeout=defaultTimeout)
         page.get_by_label(re.compile("Pilates")).click(timeout=defaultTimeout)
         print("Adding to basket...")
         page.get_by_role("button", name="Book now").click(timeout=defaultTimeout)
