@@ -78,7 +78,6 @@ jobs:
         run: |
           RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           MESSAGE="❌ <b>GitHub Action Workflow Failed!</b>"
-          MESSAGE+=$'\n'$'\n'"<b>Reason:</b> The automation script or environment crashed with a non-zero exit code."
           MESSAGE+=$'\n'"<b>Run ID:</b> ${{ github.run_id }}"
           MESSAGE+=$'\n'"<b>Link:</b> <a href=\"$RUN_URL\">Click Here to View Log</a>"
           curl -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
