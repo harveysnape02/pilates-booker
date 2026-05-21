@@ -13,7 +13,7 @@ today = now_in_uk.date()
 targetDate = today + timedelta(days=7)
 
 defaultTimeout = 6000
-username = os.environ.get('MY_USERNAME')
+username = os.environ.get('MY_USERNAMES')
 password = os.environ.get('MY_PASSWORD')
 if not username or not password:
     print("Error: Missing username or password environment variables.")
