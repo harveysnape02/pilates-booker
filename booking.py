@@ -23,7 +23,7 @@ bookingLink = f"https://bookings.better.org.uk/location/better-gym-connswater/fi
 def error_exit(browser, status):
     browser.close()
     notification.send_notification(status, targetDate)
-    exit(1)
+    exit(0)
 
 def book_pilates():
     with sync_playwright() as p:
