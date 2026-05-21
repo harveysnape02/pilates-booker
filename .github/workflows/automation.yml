@@ -68,3 +68,22 @@ jobs:
           MY_TELEGRAM_API_KEY: ${{ secrets.TELEGRAM_API_KEY }}
           MY_TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python booking.py
+      
+      #Failure step
+      - name: Send Global Workflow Failure Notification
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_API_KEY}}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          # Construct a clear system message using bash syntax
+          MESSAGE="❌ *GitHub Action Workflow Failed\!*"
+          MESSAGE+=$'\n'$'\n'"*Reason:* The automation script or environment crashed with a non-zero exit code\."
+          MESSAGE+=$'\n'"*Run ID:* ${{ github.run_id }}"
+          MESSAGE+=$'\n'"*Link:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          # Fire it directly to Telegram using native Linux curl
+          curl -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "parse_mode=MarkdownV2" \
+            -d "text=${MESSAGE}"
