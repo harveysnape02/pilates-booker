@@ -1,7 +1,7 @@
 import requests
 import os
-apiKey = os.environ.get('TELEGRAM_API_KEY')
-chatId = os.environ.get('TELEGRAM_CHAT_ID')
+apiKey = os.environ.get('MY_TELEGRAM_API_KEY')
+chatId = os.environ.get('MY_TELEGRAM_CHAT_ID')
 if not apiKey or not chatId:
     print("Error: Missing Telegram API key or chat ID environment variables.")
     exit(1)
