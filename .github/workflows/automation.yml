@@ -65,4 +65,6 @@ jobs:
         env:
           MY_USERNAME: ${{ secrets.PILATES_USERNAME }}
           MY_PASSWORD: ${{ secrets.PILATES_PASSWORD }}
-        run: python main.py
+          MY_TELEGRAM_API_KEY: ${{ secrets.TELEGRAM_API_KEY }}
+          MY_TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python booking.py
