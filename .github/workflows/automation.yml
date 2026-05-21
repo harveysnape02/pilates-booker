@@ -76,14 +76,14 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_API_KEY}}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          # Construct a clear system message using bash syntax
-          MESSAGE="❌ *GitHub Action Workflow Failed\!*"
-          MESSAGE+=$'\n'$'\n'"*Reason:* The automation script or environment crashed with a non-zero exit code\."
-          MESSAGE+=$'\n'"*Run ID:* ${{ github.run_id }}"
-          MESSAGE+=$'\n'"*Link:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          
-          # Fire it directly to Telegram using native Linux curl
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          RAW_MESSAGE="❌ *GitHub Action Workflow Failed\!*"
+          RAW_MESSAGE+=$'\n'$'\n'"*Reason:* The automation script or environment crashed with a non-zero exit code\."
+          RAW_MESSAGE+=$'\n'"*Run ID:* ${{ github.run_id }}"
+          RAW_MESSAGE+=$'\n'"*Link:* [Click Here to View Log]($RUN_URL)"
+          # Telegram MarkdownV2 requires escaping: _ * [ ] ( ) ~ ` > # + - = | { } . !
+          ESCAPED_MESSAGE=$(echo "$RAW_MESSAGE" | sed -e 's/-/\\-/g' -e 's/\./\\./g' -e 's/_/\\_/g' -e 's/!/\\!/g')
           curl -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
             -d "chat_id=${TELEGRAM_CHAT_ID}" \
             -d "parse_mode=MarkdownV2" \
-            -d "text=${MESSAGE}"
+            --data-urlencode "text=${ESCAPED_MESSAGE}"
