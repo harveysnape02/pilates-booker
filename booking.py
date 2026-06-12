@@ -9,8 +9,12 @@ import notification
 #Creates timezone aware date.
 uk_timezone = zoneinfo.ZoneInfo("Europe/London")
 now_in_uk = datetime.now(uk_timezone)
+day = now_in_uk.strftime("%w")
 today = now_in_uk.date()
-targetDate = today + timedelta(days=7)
+if day == "3" or day == "5":
+    targetDate = today + timedelta(days=6)
+else:
+    targetDate = today + timedelta(days=7)
 
 defaultTimeout = 6000
 username = os.environ.get('MY_USERNAME')
