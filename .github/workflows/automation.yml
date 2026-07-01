@@ -40,16 +40,17 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # 3. Smart Cache: Check if we already downloaded the browser previously
+      # 3. Smart Cache: Appended -v2 to force a clean, uncorrupted cache download
       - name: Cache Playwright Browsers
         id: playwright-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          # The key ensures the cache refreshes if you change your Python requirements
-          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements.txt') }}
+          # Added '-v2' to the key here to clear the bad cache
+          key: ${{ runner.os }}-playwright-v2-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-playwright-
+            ${{ runner.os }}-playwright-v2-
+
 
       # 4. Install the Chromium browser binary ONLY if the cache missed
       - name: Install Playwright Chromium Browser
