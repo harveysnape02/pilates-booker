@@ -40,28 +40,15 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # 3. Smart Cache: Appended -v2 to force a clean, uncorrupted cache download
-      - name: Cache Playwright Browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          # Added '-v2' to the key here to clear the bad cache
-          key: ${{ runner.os }}-playwright-v2-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-v2-
-
-
-      # 4. Install the Chromium browser binary ONLY if the cache missed
+      # 3. Install the Chromium browser binary every time
       - name: Install Playwright Chromium Browser
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: playwright install chromium
 
-      # 5. Fast-install just the Linux OS system packages needed for Chromium
+      # 4. Fast-install just the Linux OS system packages needed for Chromium
       - name: Install Playwright OS Dependencies
         run: playwright install-deps chromium
 
-      # 4. Run the Python script
+      # 5. Run the Python script
       - name: Run Python Script
         env:
           MY_USERNAME: ${{ secrets.PILATES_USERNAME }}
@@ -70,7 +57,7 @@ jobs:
           MY_TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python booking.py
       
-      #Failure step
+      # Failure step
       - name: Send Global Workflow Failure Notification
         if: failure()
         env:
